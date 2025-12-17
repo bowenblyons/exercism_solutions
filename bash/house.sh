@@ -1,24 +1,55 @@
 #!/usr/bin/env bash
 
-# The following comments should help you get started:
-# - Bash is flexible. You may use functions or write a "raw" script.
-#
-# - Complex code can be made easier to read by breaking it up
-#   into functions, however this is sometimes overkill in bash.
-#
-# - You can find links about good style and other resources
-#   for Bash in './README.md'. It came with this exercise.
-#
-#   Example:
-#   # other functions here
-#   # ...
-#   # ...
-#
-#   main () {
-#     # your main function code here
-#   }
-#
-#   # call main with all of the positional arguments
-#   main "$@"
-#
-# *** PLEASE REMOVE THESE COMMENTS BEFORE SUBMITTING YOUR SOLUTION ***
+readonly sfx=(
+	"the house that Jack built."
+	"the malt"
+	"the rat"
+	"the cat"
+	"the dog"
+	"the cow with the crumpled horn"
+	"the maiden all forlorn"
+	"the man all tattered and torn"
+	"the priest all shaven and shorn"
+	"the rooster that crowed in the morn"
+	"the farmer sowing his corn"
+	"the horse and the hound and the horn"
+)
+readonly pfx=(
+	"that lay in "
+	"that ate "
+	"that killed "
+	"that worried "
+	"that tossed "
+	"that milked "
+	"that kissed "
+	"that married "
+	"that woke "
+	"that kept "
+	"that belonged to "
+	"This is "
+)
+
+
+print_verse() {
+	b="$1"
+	e="$2"
+	for (( i=$(( $e-1 )); i>=$(( $b-1 )); i-- ))
+	do
+		prefix="${pfx[$i]}"
+		[[ $i == $(( $e-1 )) ]] && prefix="${pfx[11]}"
+		echo -e "$prefix${sfx[$i]}"
+	done
+}
+
+begin="$1"
+end="$2"
+
+if (( begin < 1 || begin > 12 || end < 1 || end > 12 )); then
+	echo "invalid"
+	exit 1
+fi
+for (( i=1; i<=$end; i++))
+do
+	rhyme=$( print_verse 1 $i )
+	[[ $i -ge $begin ]] && echo -e "$rhyme\n"
+done
